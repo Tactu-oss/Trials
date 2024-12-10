@@ -1482,23 +1482,30 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 					-- stricter key check
 					if KeyMain.Input.InputBox.Text == MKey then
+						local TestKey = KeyMain.Input.InputBox.Text
 						KeyFound = true
 						FoundKey = MKey
 					end
 				end
 				if KeyFound then 
 
-task.delay(0, function()
-	while true do
-		task.wait(30)
-		local TestKey = KeyMain.Input.InputBox.Text
-		for _, MKey in ipairs(Settings.KeySettings.Key) do
-			if TestKey == MKey then
-				print("Found")
-			end
-		end
-	end
-end)
+				task.delay(0, function() -- Key Auto-Checker
+					local db = false
+					while true do
+						db = false
+						task.wait(30)
+						for _, MKey in ipairs(Settings.KeySettings.Key) do
+							if TestKey == MKey then
+								db = true
+								print("Found")
+							end
+						end
+						if db == false then
+							print("NotFound")
+							break
+						end
+					end
+				end)
 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
@@ -1512,12 +1519,12 @@ end)
 					TweenService:Create(KeyMain.NoteTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 					TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 					TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-                    TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-                    TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
-                    TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-                    TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                   			TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
+                    			TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+                    			TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                    			TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+           				TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+            				TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 					task.wait(0.51)
 					Passthrough = true
 					KeyMain.Visible = false
@@ -1541,12 +1548,12 @@ end)
 						TweenService:Create(KeyMain.NoteTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 						TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 						TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-                        TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-			            TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
-			            TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-                        TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                        			TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
+			            		TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+			            		TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                        			TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+            					TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+            					TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 						task.wait(0.45)
 						game.Players.LocalPlayer:Kick("No Attempts Remaining")
 						game:Shutdown()
@@ -1576,12 +1583,12 @@ end)
 				TweenService:Create(KeyMain.NoteTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 				TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 				TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-                TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
-			    TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
-			    TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-                TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
-            TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                		TweenService:Create(KeyMain.Legacy, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
+			    	TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
+			    	TweenService:Create(KeyMain.Clipbord, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+                		TweenService:Create(KeyMain.DiscordLink, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+            			TweenService:Create(KeyMain.DiscordMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
+           			TweenService:Create(KeyMain.GameTitle, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 				task.wait(0.51)
 				RayfieldLibrary:Destroy()
 				KeyUI:Destroy()
