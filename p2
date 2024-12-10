@@ -1352,8 +1352,11 @@ function RayfieldLibrary:CreateWindow(Settings)
 		if Settings.KeySettings.GrabKeyFromSite then
 			for i, Key in ipairs(Settings.KeySettings.Key) do
 				local Success, Response = pcall(function()
+					--[[
 					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
 					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
+					]]
+					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " ")):gsub("%s+", "")
 				end)
 				if not Success then
 					print("Rayfield | "..Key.." Error " ..tostring(Response))
