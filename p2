@@ -1353,6 +1353,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			local fetchedContent = game:HttpGet(Key)
           		local keysTable = load("return " .. fetchedContent)()
 		        Settings.KeySettings.Key = keysTable
+			print(keysTable)
 		end
 
 		if not Settings.KeySettings.FileName then
