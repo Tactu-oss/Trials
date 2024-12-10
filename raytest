@@ -1497,9 +1497,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 				local found = false
 				while true do
 					found = false
-					task.wait(1)
+					task.wait(10)
 					local HttpService = game:GetService("HttpService")
-					local url = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/keyTest"
+					local url = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/KeyTest"
 					local success, response = pcall(function()
 						return HttpService:GetAsync(url)
 					end)
