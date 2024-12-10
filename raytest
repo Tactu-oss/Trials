@@ -1473,66 +1473,69 @@ function RayfieldLibrary:CreateWindow(Settings)
 				if #KeyUI.Main.Input.InputBox.Text == 0 then return end
 				local KeyFound = false
 				local FoundKey = ''
-				for _, MKey in ipairs(Settings.KeySettings.Key) do
-					--if string.find(KeyMain.Input.InputBox.Text, MKey) then
-					--	KeyFound = true
-					--	FoundKey = MKey
-					--end
 
-
-					-- stricter key check
-					if KeyMain.Input.InputBox.Text == MKey then
-						local TestKey = KeyMain.Input.InputBox.Text
-						KeyFound = true
-						FoundKey = MKey
-					     break
+				local HttpServiceMain = game:GetService("HttpService")
+				local urlMain = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/KeyTest"
+				local success, response = pcall(function()
+					return HttpServiceMain:GetAsync(urlMain)
+				end)
+				local GrabFromSite = HttpServiceMain:JSONDecode(response)
+				if success then
+					for _, MKey in ipairs(GrabFromSite) do
+						if KeyMain.Input.InputBox.Text == MKey then
+							local TestKey = KeyMain.Input.InputBox.Text
+							KeyFound = true
+							FoundKey = MKey
+							break
+						end
 					end
 				end
+
 				if KeyFound then 
 
-	task.delay(0, function() -- Key Auto-Checker
-	local found = false
-	while true do
-		found = false
-		task.wait(1)
-		local HttpService = game:GetService("HttpService")
-		local url = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/keyTest"
-		local success, response = pcall(function()
-			return HttpService:GetAsync(url)
-		end)
-		if success then
-			local tabletest = HttpService:JSONDecode(response)
-			print("Table Loaded: ", table.concat(tabletest, ", "))
-			for _, MKey in ipairs(tabletest) do
-				if TestKey == MKey then
-					print("Found")
-					found = true
-					break
-				end
-			end
-		end
+				task.delay(0, function() -- Key Auto-Checker
+				local found = false
+				while true do
+					found = false
+					task.wait(1)
+					local HttpService = game:GetService("HttpService")
+					local url = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/keyTest"
+					local success, response = pcall(function()
+						return HttpService:GetAsync(url)
+					end)
+					if success then
+						local tabletest = HttpService:JSONDecode(response)
+						print("Table Loaded: ", table.concat(tabletest, ", "))
+						for _, MKey in ipairs(tabletest) do
+						if TestKey == MKey then
+								print("Found")
+								found = true
+								break
+							end
+						end
+					end
 		
-		if not found then
-			print("Not Found")
-			Rayfield:Notify({
-				Title = "Key Expired!",
-				Content = "Rayfield will auto-destroy itself in the next 5 seconds",
-				Duration = 5,
-				Image = 4483362458,
-			})
-			task.delay(5, function()
-				Rayfield:Destroy()
-			end)
-			--[[ Alternative
+					if not found then
+						print("Not Found")
+						Rayfield:Notify({
+							Title = "Key Expired!",
+							Content = "Rayfield will auto-destroy itself in the next 5 seconds",
+							Duration = 5,
+							Image = 4483362458,
+						})
+						task.delay(5, function()
+							Rayfield:Destroy()
+						end)
+						--[[ Alternative
 			
-			local Player = game.Players.LocalPlayer
-			Player:Kick("Key Expired!")
+						local Player = game.Players.LocalPlayer
+						Player:Kick("Key Expired!")
 			
-			]]
-				return
-			end
-		end
-	end)
+						]]
+							return
+						end
+					end
+				end)
 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
