@@ -1350,29 +1350,17 @@ function RayfieldLibrary:CreateWindow(Settings)
 		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
 
 		if Settings.KeySettings.GrabKeyFromSite then
-
-				--[[
-				for i, Key in ipairs(Settings.KeySettings.Key) do
-						local Success, Response = pcall(function()
-							Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
-							Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
-						end)
-						if not Success then
-							print("Rayfield | "..Key.." Error " ..tostring(Response))
-							warn('Check docs.sirius.menu for help with Rayfield specific development.')
-						end
-					end
-				]]
-		
-		local keyUrl = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/p1"
-		local rawKeys = tostring(game:HttpGet(keyUrl)):gsub("[\n\r]", "")
-		local keysTable = {}
-			for key in rawKeys:gmatch("%S+") do
-				table.insert(keysTable, key)
+			for i, Key in ipairs(Settings.KeySettings.Key) do
+				local Success, Response = pcall(function()
+					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
+					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
+				end)
+				if not Success then
+					print("Rayfield | "..Key.." Error " ..tostring(Response))
+					warn('Check docs.sirius.menu for help with Rayfield specific development.')
+				end
 			end
 		end
-
-
 
 		if not Settings.KeySettings.FileName then
 			Settings.KeySettings.FileName = "No file name specified"
@@ -1486,14 +1474,12 @@ function RayfieldLibrary:CreateWindow(Settings)
 				local KeyFound = false
 				local FoundKey = ''
 
-				for _, MKey in ipairs(keysTable) do
-	print("Checking key: " .. MKey)
-	if KeyMain.Input.InputBox.Text == MKey then
-		KeyFound = true
-		FoundKey = MKey
-		break
-	end
-end
+				for _, MKey in ipairs(Settings.KeySettings.Key) do
+					if KeyMain.Input.InputBox.Text == MKey then
+						KeyFound = true
+						FoundKey = MKey
+					end
+				end
 
 				if KeyFound then 
 
