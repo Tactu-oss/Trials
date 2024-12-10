@@ -1351,11 +1351,9 @@ function RayfieldLibrary:CreateWindow(Settings)
 
 		if Settings.KeySettings.GrabKeyFromSite then
 			for i, Key in ipairs(Settings.KeySettings.Key) do
-print(Key)
 				local Success, Response = pcall(function()
 					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
 					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
-print(Key)
 				end)
 				if not Success then
 					print("Rayfield | "..Key.." Error " ..tostring(Response))
@@ -1477,6 +1475,8 @@ print(Key)
 				local FoundKey = ''
 
 				for _, MKey in ipairs(Settings.KeySettings.Key) do
+print(Settings.KeySettings.Key)
+print(MKey)
 					if KeyMain.Input.InputBox.Text == MKey then
 						KeyFound = true
 						FoundKey = MKey
