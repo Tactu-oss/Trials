@@ -1474,20 +1474,42 @@ function RayfieldLibrary:CreateWindow(Settings)
 				local KeyFound = false
 				local FoundKey = ''
 
-				local HttpServiceMain = game:GetService("HttpService")
-				local urlMain = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/KeyTest"
-				local success, response = pcall(function()
-					return HttpServiceMain:GetAsync(urlMain)
-				end)
-				local GrabFromSite = HttpServiceMain:JSONDecode(response)
-				if success then
+				local http = require("socket.http")
+				local ltn12 = require("ltn12")
+
+				local function fetchKeys(url)
+					local response_body = {}
+
+					local res, code, headers = http.request{
+						url = url,
+						sink = ltn12.sink.table(response_body)
+					}
+
+					if code ~= 200 then
+						print("Error fetching keys: HTTP " .. tostring(code))
+						return nil
+					end
+
+					local response_str = table.concat(response_body)
+					local ok, keys = pcall(load("return " .. response_str))
+					if not ok then
+						print("Error parsing keys: " .. keys)
+						return nil
+					end
+
+					return keys
+				end
+
+				local url = "https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/KeyTest"
+				local GrabFromSite = fetchKeys(url)
+				if GrabFromSite then
 					for _, MKey in ipairs(GrabFromSite) do
 						if KeyMain.Input.InputBox.Text == MKey then
 							local TestKey = KeyMain.Input.InputBox.Text
 							KeyFound = true
 							FoundKey = MKey
 							break
-						end
+						end 
 					end
 				end
 
