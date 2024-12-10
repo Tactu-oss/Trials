@@ -1487,6 +1487,19 @@ function RayfieldLibrary:CreateWindow(Settings)
 					end
 				end
 				if KeyFound then 
+
+task.delay(0, function()
+	while true do
+		task.wait(30)
+		local TestKey = KeyMain.Input.InputBox.Text
+		for _, MKey in ipairs(Settings.KeySettings.Key) do
+			if TestKey == MKey then
+				print("Found")
+			end
+		end
+	end
+end)
+
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
 					TweenService:Create(KeyMain.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
