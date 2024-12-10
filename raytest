@@ -1350,10 +1350,16 @@ function RayfieldLibrary:CreateWindow(Settings)
 		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
 
 		if Settings.KeySettings.GrabKeyFromSite then
-			local fetchedContent = game:HttpGet(Key)
-          		local keysTable = load("return " .. fetchedContent)()
-		        Settings.KeySettings.Key = keysTable
-			print(keysTable)
+			for i, Key in ipairs(Settings.KeySettings.Key) do
+				local Success, Response = pcall(function()
+					Settings.KeySettings.Key[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
+					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
+				end)
+				if not Success then
+					print("Rayfield | "..Key.." Error " ..tostring(Response))
+					warn('Check docs.sirius.menu for help with Rayfield specific development.')
+				end
+			end
 		end
 
 		if not Settings.KeySettings.FileName then
