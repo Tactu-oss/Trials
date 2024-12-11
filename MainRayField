@@ -1490,9 +1490,9 @@ MKeyInputFound = KeyMain.Input.InputBox.Text
 task.delay(0, function()
 	local db = false
 	while true do
-		wait(1)
+		wait(10)
 		db = false
-		local NewCode = Settings.KeySettings.Key
+		local NewCode = {"https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/MainKey"}
 		for i, Key in ipairs(NewCode) do
 			NewCode[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
 			NewCode[i] = string.gsub(NewCode[i], " ", "")
