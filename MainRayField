@@ -1416,10 +1416,12 @@ end
                         KeyMain.NoteMessage.RichText = true
 			KeyMain.NoteMessage.Text = Settings.KeySettings.Note or "No instructions"
 
-			KeyMain.Clipbord.MouseButton1Down:Connect(function()
-			local copy = "https://www.youtube.com/watch?v=RGfXutoXoF8"
+			--[[
+KeyMain.Clipbord.MouseButton1Down:Connect(function()
+			local copy = "  "
 			setclipboard(tostring(copy))
 			end)
+]]
 
 			KeyMain.Size = UDim2.new(0, 467, 0, 175)
 			KeyMain.BackgroundTransparency = 1
@@ -1487,12 +1489,13 @@ MKeyInputFound = KeyMain.Input.InputBox.Text
 
 				if KeyFound then 
 
+--[[
 task.delay(0, function()
 	local db = false
 	while true do
 		wait(60)
 		db = false
-		local NewCode = {"https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/MainKey"}
+		local NewCode = {" "}
 		for i, Key in ipairs(NewCode) do
 			NewCode[i] = tostring(game:HttpGet(Key):gsub("[\n\r]", " "))
 			NewCode[i] = string.gsub(NewCode[i], " ", "")
@@ -1523,6 +1526,7 @@ end)
 		end
 	end
 end)
+]]
 
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 1}):Play()
 					TweenService:Create(KeyMain, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0, 467, 0, 175)}):Play()
