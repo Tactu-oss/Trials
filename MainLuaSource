@@ -65,7 +65,7 @@ getgenv().PlayerTV = tostring(game.Players.LocalPlayer.Name)
    end,
 })
 
-getgenv().StudsYG = nil
+getgenv().StudsYG = 20
 local Slider = Tab:CreateSlider({
    Name = "Top-Down View Slider",
    Range = {10, 50},
@@ -75,6 +75,19 @@ local Slider = Tab:CreateSlider({
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
       getgenv().StudsYG = Value
+   end,
+})
+
+getgenv().AnglesYG = -90
+local Slider10 = Tab:CreateSlider({
+   Name = "Top-Down Angles Slider",
+   Range = {-180, 90},
+   Increment = 10,
+   Suffix = "Angle",
+   CurrentValue = -90,
+   Flag = "Slider10", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      getgenv().AnglesYG = Value
    end,
 })
 
@@ -102,7 +115,7 @@ local Toggle = Tab:CreateToggle({
                   return
                end
                if getgenv().StudsYG ~= nil then
-                  Cam.CFrame = CFrame.new(Primary.Position.X,tonumber(getgenv().StudsYG),Primary.Position.Z) * CFrame.Angles(math.rad(-90),0,0)
+                  Cam.CFrame = CFrame.new(Primary.Position.X,tonumber(getgenv().StudsYG),Primary.Position.Z) * CFrame.Angles(math.rad(getgenv().AnglesYG),0,0)
                else
                   Cam.CFrame = CFrame.new(Primary.Position.X,StudsY,Primary.Position.Z) * CFrame.Angles(math.rad(-90),0,0)
                end
@@ -158,12 +171,12 @@ local tableMaps = {
 	Doodle = Vector3.new(1328.9097900390625, 15.200156211853027, -3252.9169921875),
 	IsleOfBalls = Vector3.new(-101.30972290039062, 4.168971538543701, -1835.23974609375),
 	MountainsMap = Vector3.new(726.5659790039062, 3.7000067234039307, -3275.414794921875),
-	TheHallows = Vector3.new(0,0,0),
-	HoloMap = Vector3.new(0,0,0),
-	ForestMap = Vector3.new(0,0,0),
-	GoldenCastle = Vector3.new(0,0,0),
-	Tundra = Vector3.new(0,0,0),
-	Railroad = Vector3.new(0,0,0)
+	TheHallows = Vector3.new(-720.5363159179688, 20.699996948242188, -3385.430908203125),
+	HoloMap = Vector3.new(721.126220703125, 193.6361846923828, -4692.01513671875),
+	ForestMap = Vector3.new(254.61441040039062, 8.699997901916504, -3853.20556640625),
+	GoldenCastle = Vector3.new(2489.35400390625, 126.69696044921875, -3252.39794921875),
+	Tundra = Vector3.new(-1393.7779541015625, 5.69999885559082, 1227.9234619140625),
+	Railroad = Vector3.new(-1727.5205078125, 60.61420822143555, -2721.731201171875)
 }
 
 getgenv().VState2 = false
@@ -214,36 +227,7 @@ local Toggle2 = Tab:CreateToggle({
    end,
 })
 
-local Button = Tab:CreateButton({
-   Name = "Teleport-Location(CFrame)(Button)",
-   Callback = function()
-      
-      if getgenv().SMap == nil then
-         Rayfield:Notify({
-            Title = "Map not Selected!",
-            Content = "Be sure to select a map before toggling.",
-            Duration = 6,
-            Image = "rewind",
-         })
-         return
-      end
-
-      if getgenv().PlayerTV ~= nil and game.Players:FindFirstChild(tostring(getgenv().PlayerTV)) then
-         local lookPosition = Vector3.new(90, 0, 0) 
-         game.Players:FindFirstChild(tostring(getgenv().PlayerTV)).Character.HumanoidRootPart.CFrame = CFrame.new(tableMaps[getgenv().SMap], lookPosition)
-      else
-         Rayfield:Notify({
-            Title = "Player not found!",
-            Content = "Make sure to write your main player name and not your nickname.",
-            Duration = 6,
-            Image = "rewind",
-         })
-      end
-
-   end,
-})
-
-local Section = Tab:CreateSection("Read this!")
+local Section = Tab:CreateSection("Note")
 local Button = Tab:CreateButton({
    Name = "Press to copy Discord Server invite to clipboard",
    Callback = function()
@@ -251,7 +235,7 @@ local Button = Tab:CreateButton({
 		setclipboard(tostring(copy))
    end,
 })
-local Paragraph = Tab:CreateParagraph({Title = "How to use:", Content = "The developers of this game made it impossible to see remote events accurately, but that does not stop us! The best way to macro is to activate all toggles from the misc tab, along with the View-Down and Teleport-Location toggle from the macro tab. After you activate them, use TinyTask/RepetiTouch Pro to place units down and upgrade them. That is all! If you have any suggestions or if you find any bugs, come on our Discord server and write some! :D"})
+local Paragraph = Tab:CreateParagraph({Title = "Regarding Units/Other:", Content = "We are currently working on finding a solution to decompile the buffering system that the devs have put in our way. Until then, you may need to use the help of TinyTask/RepetiTouch Pro to place down units and upgrade them! If you find any bugs or have any suggestions on what to add next, join our Discord by pressing the button above!"})
 
 -- End
 
@@ -441,17 +425,28 @@ local Section = Tab2:CreateSection("Extra")
 local Button = Tab2:CreateButton({
    Name = "Lobby",
    Callback = function()
-       game:GetService("ReplicatedStorage").Remotes.ReturnToLobby:FireServer()
+      if game:GetService("ReplicatedStorage").Remotes:FindFirstChild("ReturnToLobby") then
+         game:GetService("ReplicatedStorage").Remotes.ReturnToLobby:FireServer()
+     end
    end,
 })
 
-local Paragraph = Tab2:CreateParagraph({Title = "Warning!", Content = "Make sure to disable all toggles before destroying the interface! Otherwise they will keep working."})
 local Button = Tab2:CreateButton({
    Name = "Destroy Interface",
    Callback = function()
+
+      getgenv().VState1 = false
+      getgenv().VState2 = false
+      getgenv().VState3 = false
+      getgenv().VState4 = false
+      getgenv().VState5 = false
+      getgenv().VState6 = false
+      getgenv().VState7 = false
+
       Rayfield:Destroy()
    end,
 })
+local Paragraph = Tab:CreateParagraph({Title = "Warning!", Content = "Destroying the interface will turn off all toggles."})
 
 -- End
 
