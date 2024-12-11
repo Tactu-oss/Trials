@@ -1508,12 +1508,16 @@ task.delay(0, function()
 
 		for _, MKey in ipairs(NewMainTable) do
 			task.wait()
+print(MKey)
 			if MKeyInputFound == MKey then
 				print("Key Good!")
+print(MKeyInputFound)
+print(MKey)
 				db = true
 				break
 			end
 		end
+print(db)
 		if db == false then
 			print("Key Expired!")
 			return
