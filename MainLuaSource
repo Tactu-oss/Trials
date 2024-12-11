@@ -81,7 +81,7 @@ local Slider = Tab:CreateSlider({
 getgenv().AnglesYG = -90
 local Slider10 = Tab:CreateSlider({
    Name = "Top-Down Angles Slider",
-   Range = {-180, 90},
+   Range = {-90, 90},
    Increment = 10,
    Suffix = "Angle",
    CurrentValue = -90,
@@ -446,7 +446,7 @@ local Button = Tab2:CreateButton({
       Rayfield:Destroy()
    end,
 })
-local Paragraph = Tab:CreateParagraph({Title = "Warning!", Content = "Destroying the interface will turn off all toggles."})
+local Paragraph = Tab2:CreateParagraph({Title = "Warning!", Content = "Destroying the interface will turn off all toggles."})
 
 -- End
 
