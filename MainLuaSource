@@ -443,6 +443,7 @@ local Button = Tab2:CreateButton({
       getgenv().VState6 = false
       getgenv().VState7 = false
 
+      Cam.CameraType = Enum.CameraType.Custom
       Rayfield:Destroy()
    end,
 })
