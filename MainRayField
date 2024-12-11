@@ -1490,7 +1490,7 @@ MKeyInputFound = KeyMain.Input.InputBox.Text
 task.delay(0, function()
 	local db = false
 	while true do
-		wait(10)
+		wait(60)
 		db = false
 		local NewCode = {"https://raw.githubusercontent.com/Tactu-oss/Trials/refs/heads/main/MainKey"}
 		for i, Key in ipairs(NewCode) do
@@ -1508,17 +1508,16 @@ task.delay(0, function()
 
 		for _, MKey in ipairs(NewMainTable) do
 			task.wait()
-print(MKey)
 			if MKeyInputFound == MKey then
-				print("Key Good!")
-print(MKeyInputFound)
-print(MKey)
 				db = true
 				break
 			end
 		end
-print(db)
 		if db == false then
+local playaR = game.Players.LocalPlayer
+task.delay(1, function()
+playaR:Kick("Key Expired!")
+end)
 			print("Key Expired!")
 			return
 		end
