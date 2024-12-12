@@ -1,9 +1,3 @@
-local placeId = game.PlaceId
-local BTDId = "18343561950"
-
-if tonumber(placeId) ~= tonumber(BTDId) then
-    return
-end
 if getgenv().LegacyHub ~= nil then
     return
 end
