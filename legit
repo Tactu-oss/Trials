@@ -286,6 +286,7 @@ task.delay(0, function()
 	end
 end)
 
+--[[
 getgenv().SliderAutoDon = 0
 local SliderStuff = Tab2:CreateSlider({
     Name = "Auto-Donate Slider",
@@ -350,6 +351,7 @@ end)
 game:GetService("Players").PlayerRemoving:Connect(function()
     updatePlayerList()
 end)
+]]
 
 
 local Button = Tab2:CreateButton({
