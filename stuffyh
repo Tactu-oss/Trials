@@ -1,0 +1,182 @@
+local TowerPath = game:GetService("Workspace"):WaitForChild("Towers", 30)
+local Difficulty = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("MainGui", 30):WaitForChild("Difficulty", 30)
+if TowerPath == nil then return end
+if Difficulty == nil then return end
+
+local remoteUpg = "UpgradeTowerServer"
+local remoteSpw = "SpawnTowerServer"
+local mod = require(game:GetService("ReplicatedStorage").Modules.RemoteEvents)
+local remoteIdUpg = 30
+local remoteIdSpw = 28
+
+local MainTableMacro = {}
+local Models = {}
+local Names = 1
+local Steps = 1
+
+local Playing = false
+local Recording = false 
+
+function SaveUpValueA(a)
+	task.delay(0, function()
+		local aTable = {}
+		table.insert(aTable, tostring(os.time()))
+
+		local StepTSearch = tostring("Step"..Steps)
+		table.insert(MainTableMacro, StepTSearch)
+		Steps += 1
+		for i,v in pairs(a) do
+			table.insert(aTable, tostring(v))
+		end
+		local GetTower = TowerPath:GetChildren()
+
+		repeat
+			GetTower = TowerPath:GetChildren()
+			task.wait(0.1)
+		until #GetTower >= 1
+
+		local Model
+		local FoundId = false
+		repeat
+			GetTower = TowerPath:GetChildren()
+			task.wait()
+			for i,v in ipairs(GetTower) do
+				task.wait(0.1)
+				if tonumber(v:GetAttribute("EntityId")) == tonumber(aTable[3]) then
+					Model = v
+					FoundId = true
+					break
+				end
+			end
+		until FoundId == true
+
+		local UpgNameCustom = Model.Name..tostring(Model:GetAttribute("EntityId"))
+		table.insert(aTable, tostring(UpgNameCustom))
+		
+		print("--Upgraded--")
+		print(aTable[1]) -- os.Time
+		print(aTable[3]) -- Id
+		print(aTable[4]) -- Upgrade
+		print(aTable[5]) -- UpgNameCustom
+		print("--Upgraded--")
+		
+		MainTableMacro[StepTSearch] = aTable
+		
+		--print(MainTableMacro[StepTSearch][2])
+		--print(MainTableMacro[StepTSearch][3])
+		--print(MainTableMacro[StepTSearch][4])
+		--print(MainTableMacro[StepTSearch][5])
+	end)
+end
+
+function SaveUpValueB(b)
+	task.delay(0, function()
+		local bTable = {}
+		table.insert(bTable, tostring(os.time()))
+
+		local StepTSearch = tostring("Step"..Steps)
+		table.insert(MainTableMacro, StepTSearch)
+		Steps += 1
+		for i,v in pairs(b) do
+			table.insert(bTable, tostring(v))
+		end
+		local GetTower = TowerPath:GetChildren()
+
+		repeat
+			GetTower = TowerPath:GetChildren()
+			task.wait(0.1)
+		until #GetTower >= 1
+		
+		local Model
+		local FoundId = false
+		repeat
+			GetTower = TowerPath:GetChildren()
+			task.wait()
+			for i,v in ipairs(GetTower) do
+				task.wait(0.1)
+				if v:GetAttribute("EntityId") ~= nil  then
+					if table.find(Models, v) then
+					else
+						Model = v
+						FoundId = true
+						table.insert(Models, v)
+						break
+					end
+				end
+			end
+		until FoundId == true
+		
+		local ModelId = Model:GetAttribute("EntityId")
+		local SpwNameCustom = Model.Name..tostring(Model:GetAttribute("EntityId"))
+		table.insert(bTable, tostring(ModelId))
+		table.insert(bTable, tostring(SpwNameCustom))
+		
+		print("--Placed--")
+		print(bTable[1]) -- os.Time
+		print(bTable[3]) -- Name.Buffered
+		print(bTable[4]) -- Position
+		print(bTable[5]) -- 0
+		print(bTable[6]) -- Info.Buffered
+		print(bTable[7]) -- Id
+		print(bTable[8]) -- SpwNameCustom
+		print("--Placed--")
+		
+		MainTableMacro[StepTSearch] = bTable
+		
+		--print(MainTableMacro[StepTSearch][2])
+		--print(MainTableMacro[StepTSearch][3])
+		--print(MainTableMacro[StepTSearch][4])
+		--print(MainTableMacro[StepTSearch][5])
+		--print(MainTableMacro[StepTSearch][6])
+		--print(MainTableMacro[StepTSearch][7])
+		--print(MainTableMacro[StepTSearch][8])
+	end)
+end
+
+local aFunc 
+aFunc = hookfunction(mod[remoteUpg].ToServer,function(...)
+	local a = {...}
+	if Playing == true then task.wait() aFunc(...) return end
+	if a[1]["id"] ~= remoteIdUpg then task.wait() aFunc(...) return end
+	SaveUpValueA(a)
+	task.wait()
+	aFunc(...)
+end)
+
+local bFunc 
+bFunc = hookfunction(mod[remoteSpw].ToServer,function(...)
+	local b = {...}
+	if Playing == true then task.wait() bFunc(...) return end
+	if b[1]["id"] ~= remoteIdSpw then task.wait() bFunc(...) return end
+	SaveUpValueB(b)
+	task.wait()
+	bFunc(...)
+end)
+
+--[[
+local db = false
+while true do
+    task.wait(1)
+    if Difficulty and Difficulty.Visible == false then
+        db = true
+        Playing = false
+    else
+        Playing = true
+
+        if db == true then
+            for i, v in pairs(MainTableMacro) do -- Ensure `pairs` is used to iterate tables.
+				task.wait(0.1)
+				print(i)
+				print(v)
+				print(v[1])
+            end
+            break
+        end
+    end
+end
+]]
+
+--UpgradeTower.Active = gets UpgradeNumber + os.time + TableNameAssignment = tower.Name..#Tower:GetChildren()
+--SpawnTower.Active = gets Id of tower + args + os.time + TableNameAssignment = tower.Name..#Tower:GetChildren() +- IntString(With the custom.Name)(Inside the tower)
+
+--How It Works: When macro plays and upgrades it checks for the unit with the same TableName(checks for the string) then upgrades it using the towers id
