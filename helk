@@ -1,0 +1,97 @@
+while true do
+	task.wait(1)
+
+	if game:GetService("ReplicatedStorage").Remotes:FindFirstChild("VoteDifficulty") then
+		if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Difficulty.Visible == true then
+			local ohString1 = "Test"
+			game:GetService("ReplicatedStorage").Remotes.VoteDifficulty:FireServer(ohString1)
+			task.delay(3, function()
+				local ohString1 = "4ed3eaff-4d3f-4259-bcac-a4511e9760f6"
+				local ohVector32 = Vector3.new(747.6624755859375, 1.0000114440917969, -3287.81396484375)
+				local ohNumber3 = 0
+				local ohString4 = "{b5a07f75-acf5-4539-a4b3-618a3bfea7ec}"
+
+				game:GetService("ReplicatedStorage").Remotes.SpawnTowerServer:FireServer(ohString1, ohVector32, ohNumber3, ohString4)
+				task.wait(0.1)
+				local TowerPath = game.Workspace.Towers
+				local GetTower = TowerPath:GetChildren()
+
+				repeat
+					GetTower = TowerPath:GetChildren()
+					task.wait(0.1)
+				until #GetTower >= 1
+
+				local Model
+				local FoundId = false
+				repeat
+					GetTower = TowerPath:GetChildren()
+					task.wait()
+					for i,v in ipairs(GetTower) do
+						task.wait(0.1)
+						if v:GetAttribute("EntityId") ~= nil  then
+							Model = v
+							FoundId = true
+							break
+						end
+					end
+				until FoundId == true
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 2
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 3
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 4
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 5
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 6
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 7
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 8
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+				task.wait(0.1)
+
+				local ohNumber1 = tonumber(Model:GetAttribute("EntityId"))
+				local ohNumber2 = 9
+
+				game:GetService("ReplicatedStorage").Remotes.UpgradeTowerServer:FireServer(ohNumber1, ohNumber2)
+			end)
+		end
+	end
+
+	if  game:GetService("ReplicatedStorage").Remotes:FindFirstChild("VoteRestart") then
+		if game:GetService("Players").LocalPlayer.PlayerGui.MainGui:FindFirstChild("Retry") then
+			if game:GetService("Players").LocalPlayer.PlayerGui.MainGui.Retry.Visible == true then
+				game:GetService("ReplicatedStorage").Remotes.VoteRestart:FireServer()
+			end
+		end
+	end
+
+end
