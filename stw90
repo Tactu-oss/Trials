@@ -1,0 +1,271 @@
+local fm = require(game:GetService("ReplicatedStorage").Modules.Fusion)
+local sm = require(game:GetService("ReplicatedStorage").Client.UI.State)
+
+task.wait(1)
+
+local loadout = sm["DailyQuestOptions"]
+local invTbl = fm.peek(loadout)
+
+local mod = require(game:GetService("ReplicatedStorage").Modules.RemoteEvents)
+local activateDailyQuest = mod["activate_daily_quest"]
+
+local HighestReward = false -- This option will disable typeOption due to conflicts
+local GemsOn = false -- Prioritizes Gems over Coins
+local DisableWall_DamageQuests = true
+
+repeat
+	task.wait()
+until invTbl ~= nil
+
+local IndexToNotAdd = {}
+local ChosenItems = {}
+local items = {}
+
+if HighestReward == true then
+	if GemsOn == true then
+		for i,v in invTbl do
+			if tostring(invTbl[i]["rewards"][1]["kind"]) == "Gems" then
+				
+				if DisableWall_DamageQuests == true then
+					if tonumber(#invTbl[v]["requirements"]) >= 2 then
+						for i_Number =1,tonumber(#invTbl[v]["requirements"]),1 do
+							if invTbl[v]["requirements"][i_Number]["is_heal"] ~= nil then
+								if tostring(invTbl[v]["requirements"][i_Number]["type"]) == "is_heal" then
+									table.insert(IndexToNotAdd, i)
+								else
+									if table.find(IndexToNotAdd, i) then
+									else
+										table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+									end
+								end
+							else
+								if table.find(IndexToNotAdd, i) then
+								else
+									table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+								end
+							end
+						end
+					else
+						if invTbl[v]["requirements"][1]["is_heal"] ~= nil then
+							if tostring(invTbl[v]["requirements"][1]["type"]) == "is_heal" then
+							else
+								table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+							end
+						else
+							table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+						end
+					end
+				else
+					table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+				end
+				
+			end
+		end
+		if tonumber(#ChosenItems) <= 0 then
+			for i,v in invTbl do
+				if tostring(invTbl[i]["rewards"][1]["kind"]) == "Coins" then
+					
+					if DisableWall_DamageQuests == true then
+						if tonumber(#invTbl[v]["requirements"]) >= 2 then
+							for i_Number =1,tonumber(#invTbl[v]["requirements"]),1 do
+								if invTbl[v]["requirements"][i_Number]["is_heal"] ~= nil then
+									if tostring(invTbl[v]["requirements"][i_Number]["type"]) == "is_heal" then
+										table.insert(IndexToNotAdd, i)
+									else
+										if table.find(IndexToNotAdd, i) then
+										else
+											table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+										end
+									end
+								else
+									if table.find(IndexToNotAdd, i) then
+									else
+										table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+									end
+								end
+							end
+						else
+							if invTbl[v]["requirements"][1]["is_heal"] ~= nil then
+								if tostring(invTbl[v]["requirements"][1]["type"]) == "is_heal" then
+								else
+									table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+								end
+							else
+								table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+							end
+						end
+					else
+						table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+					end
+					
+				end
+			end
+		end
+
+		local gem_to_coin_rate = 100
+
+		local function get_coin_value(item)
+			if item.type == "Gems" then
+				return item.value * gem_to_coin_rate
+			elseif item.type == "Coins" then
+				return item.value
+			end
+		end
+
+		local highest_value = nil
+		local highest_item = nil
+
+		for i, item in ipairs(ChosenItems) do
+			local coin_value = get_coin_value(item)
+			if not highest_value or coin_value > highest_value then
+				highest_value = coin_value
+				highest_item = item
+			end
+		end
+
+		if highest_item then
+			print(highest_item["type"])
+			print(highest_item["value"])
+			print(highest_item["index"])
+			
+			local QuestToActive = tonumber(highest_item["index"])
+			--activateDailyQuest.ToServer(activateDailyQuest, QuestToActive)
+		end
+		return
+	end
+	for i,v in invTbl do
+		if DisableWall_DamageQuests == true then
+			if tonumber(#invTbl[v]["requirements"]) >= 2 then
+				for i_Number =1,tonumber(#invTbl[v]["requirements"]),1 do
+					if invTbl[v]["requirements"][i_Number]["is_heal"] ~= nil then
+						if tostring(invTbl[v]["requirements"][i_Number]["type"]) == "is_heal" then
+							table.insert(IndexToNotAdd, i)
+						else
+							if table.find(IndexToNotAdd, i) then
+							else
+								table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+							end
+						end
+					else
+						if table.find(IndexToNotAdd, i) then
+						else
+							table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+						end
+					end
+				end
+			else
+				if invTbl[v]["requirements"][1]["is_heal"] ~= nil then
+					if tostring(invTbl[v]["requirements"][1]["type"]) == "is_heal" then
+					else
+						table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+					end
+				else
+					table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+				end
+			end
+		else
+			table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+		end
+	end
+
+	local gem_to_coin_rate = 100
+	
+	local function get_coin_value(item)
+		if item.type == "Gems" then
+			return item.value * gem_to_coin_rate
+		elseif item.type == "Coins" then
+			return item.value
+		end
+	end
+	
+	local highest_value = nil
+	local highest_item = nil
+	local highest_index = 0
+	
+	for i, item in ipairs(items) do
+		local coin_value = get_coin_value(item)
+		if not highest_value or coin_value > highest_value then
+			highest_value = coin_value
+			highest_item = item
+			highest_index = i
+		end
+	end
+	
+	if highest_item and highest_index ~= 0 then
+		print(highest_item["type"])
+		print(highest_item["value"])
+		print(highest_index)
+		
+		local QuestToActive = tonumber(highest_index)
+		--activateDailyQuest.ToServer(activateDailyQuest, QuestToActive)
+	end
+	return
+else
+	for i,v in invTbl do
+		if DisableWall_DamageQuests == true then
+			if tonumber(#invTbl[v]["requirements"]) >= 2 then
+				for i_Number =1,tonumber(#invTbl[v]["requirements"]),1 do
+					if invTbl[v]["requirements"][i_Number]["is_heal"] ~= nil then
+						if tostring(invTbl[v]["requirements"][i_Number]["type"]) == "is_heal" then
+							table.insert(IndexToNotAdd, i)
+						else
+							if table.find(IndexToNotAdd, i) then
+							else
+								table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+							end
+						end
+					else
+						if table.find(IndexToNotAdd, i) then
+						else
+							table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+						end
+					end
+				end
+			else
+				if invTbl[v]["requirements"][1]["is_heal"] ~= nil then
+					if tostring(invTbl[v]["requirements"][1]["type"]) == "is_heal" then
+					else
+						table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+					end
+				else
+					table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+				end
+			end
+		else
+			table.insert(items, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"]), index = i})
+		end
+	end
+
+	local gem_to_coin_rate = 100
+
+	local function get_coin_value(item)
+		if item.type == "Gems" then
+			return item.value * gem_to_coin_rate
+		elseif item.type == "Coins" then
+			return item.value
+		end
+	end
+
+	local highest_value = nil
+	local highest_item = nil
+	local highest_index = 0
+
+	for i, item in ipairs(items) do
+		local coin_value = get_coin_value(item)
+		if not highest_value or coin_value > highest_value then
+			highest_value = coin_value
+			highest_item = item
+			highest_index = i
+		end
+	end
+
+	if highest_item and highest_index ~= 0 then
+		print(highest_item["type"])
+		print(highest_item["value"])
+		print(highest_index)
+
+		local QuestToActive = tonumber(highest_index)
+		--activateDailyQuest.ToServer(activateDailyQuest, QuestToActive)
+	end
+	return
+end
