@@ -1,0 +1,116 @@
+local fm = require(game:GetService("ReplicatedStorage").Modules.Fusion)
+local sm = require(game:GetService("ReplicatedStorage").Client.UI.State)
+
+task.wait(1)
+
+local loadout = sm["DailyQuestOptions"]
+local invTbl = fm.peek(loadout)
+
+local HighestReward = true -- This option will disable typeOption due to conflicts
+local GemsOn = true -- Prioritizes Gems over Coins
+
+local TypeOptions = false
+local TypeOptions = { -- This is a rank from 1 to 3, the system will prioritize the first one, if there is no damage type then the second one, then so and so on
+	"damage", -- 1
+	"kill", -- 2
+	"is_heal" -- 3
+}
+
+repeat
+	task.wait()
+until invTbl ~= nil
+
+local ChosenItems = {}
+if HighestReward == true then
+	if TypeOptions == true then
+		if GemsOn == true then
+			-- To be continued
+			
+		else
+			-- To be continued
+			
+		end
+		return
+	end
+	
+	if GemsOn == true then
+		for i,v in invTbl do
+			if tostring(invTbl[i]["rewards"][1]["kind"]) == "Gems" then
+				table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"])})
+			end
+		end
+		if tonumber(#ChosenItems) <= 0 then
+			for i,v in invTbl do
+				if tostring(invTbl[i]["rewards"][1]["kind"]) == "Coins" then
+					table.insert(ChosenItems, {type = tostring(invTbl[i]["rewards"][1]["kind"]), value = tonumber(invTbl[i]["rewards"][1]["amount"])})
+				end
+			end
+		end
+
+		local gem_to_coin_rate = 100
+
+		local function get_coin_value(item)
+			if item.type == "Gems" then
+				return item.value * gem_to_coin_rate
+			elseif item.type == "Coins" then
+				return item.value
+			end
+		end
+
+		local highest_value = nil
+		local highest_item = nil
+		local highest_index = 0
+
+		for i, item in ipairs(ChosenItems) do
+			local coin_value = get_coin_value(item)
+			if not highest_value or coin_value > highest_value then
+				highest_value = coin_value
+				highest_item = item
+				highest_index = i
+			end
+		end
+
+		if highest_item and highest_index ~= 0 then
+			print(highest_item["type"])
+			print(highest_item["value"])
+			print(highest_index)
+		end
+		return
+	end
+
+	local items = {
+		{type = tostring(invTbl[1]["rewards"][1]["kind"]), value = tonumber(invTbl[1]["rewards"][1]["amount"])},
+		{type = tostring(invTbl[2]["rewards"][1]["kind"]), value = tonumber(invTbl[2]["rewards"][1]["amount"])},
+		{type = tostring(invTbl[3]["rewards"][1]["kind"]), value = tonumber(invTbl[3]["rewards"][1]["amount"])}
+	}
+
+	local gem_to_coin_rate = 100
+	
+	local function get_coin_value(item)
+		if item.type == "Gems" then
+			return item.value * gem_to_coin_rate
+		elseif item.type == "Coins" then
+			return item.value
+		end
+	end
+	
+	local highest_value = nil
+	local highest_item = nil
+	local highest_index = 0
+	
+	for i, item in ipairs(items) do
+		local coin_value = get_coin_value(item)
+		if not highest_value or coin_value > highest_value then
+			highest_value = coin_value
+			highest_item = item
+			highest_index = i
+		end
+	end
+	
+	if highest_item and highest_index ~= 0 then
+		print(highest_item["type"])
+		print(highest_item["value"])
+		print(highest_index)
+	end
+	return
+end
